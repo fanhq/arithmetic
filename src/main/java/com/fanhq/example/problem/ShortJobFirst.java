@@ -45,7 +45,7 @@ public class ShortJobFirst {
         int minIndex = 0;
         int lastIndex = 0;
         //得到任务调动的顺序
-        int[] durations = getMin(requestTime);
+        int[] durations = getMin(durationTime);
         for (int i = 1; i < length; i++) {
             minIndex = durations[i - 1] + 1;
             //开始时间 = task == 0 ? 0 : 上个优选任务的完成时间
