@@ -75,7 +75,7 @@ public class ExchangeDemo {
         for (int i = 1; i < dp.length; i++) {
             for (int j = 1; j < dp[0].length; j++) {
                 num = dp[i - 1][j];
-                num += j >= arr[i] ? dp[i][j - arr[i]] : 0;
+                num = num + (j >= arr[i] ? dp[i][j - arr[i]] : 0);
                 dp[i][j] = num;
             }
         }
