@@ -54,10 +54,10 @@ public class ExchangeDemo {
     }
 
     public static void main(String[] args) {
-        int arraydemo[]= {1,5,10,50,100};
+        int arrayDemo[]= {1,5,10,50,100};
         int aim=57;
 
-        int answer= exchangeWays(arraydemo,aim);
+        int answer= exchangeWays(arrayDemo,aim);
         System.out.println("# ANSWER= "+answer);
 
     }
