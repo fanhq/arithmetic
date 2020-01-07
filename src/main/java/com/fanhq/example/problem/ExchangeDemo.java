@@ -5,60 +5,80 @@ package com.fanhq.example.problem;
  * @date 2020/1/7
  */
 public class ExchangeDemo {
-    /*
-     * 问题：换钱问题
-     * 给定一个数组arraydemo，arraydemo中所有的值都为正数且不重复。
-     * 每个值代表一种面值的货币，每种面值的货币可以使用任意张，再给定一个整数aim代表要找的钱数，
-     * 求组成aim的最少货币数。
-     *
-     * 举例：
-     * arraydemo=[1,5,10,50,100],aim = 53
-     * 1张50元,再加上3张1元，可以组成53元；其它的找钱方案都要使用更多张的货币，所以返回4
-     * arraydemo=[1,5,10,50,100],aim=0
-     * 不用任何货币就可以组成0元，返回0
-     * arraydemo=[5,10,50,100],aim=2
-     * 根本无法组成2元，钱不能找开的情况下默认返回-1
-     *
-     * */
 
-    private static int exchangeWays(int[] arraydemo, int aim) {
-        // TODO Auto-generated method stub
 
-        if (arraydemo == null || arraydemo.length == 0 || aim < 0) {
+    public static void main(String[] args) {
+        int[] arr1 = new int[]{2, 3, 5};
+        int aim1 = 20;
+        System.out.println(minCoinChange(arr1, 20));
+
+        int[] arr2 = new int[]{1, 5, 10, 25};
+        int aim2 = 15;
+        System.out.println(numCoinExchange(arr2, aim2));
+    }
+
+    /**
+     * 最少硬币
+     *
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public static int minCoinChange(int[] coins, int amount) {
+        if (coins == null || coins.length <= 0 || amount < 0) {
             return -1;
         }
-
-        int n = arraydemo.length;
-        int max = Integer.MAX_VALUE;
-        int[][] dp = new int[n][aim + 1];
-        for (int j = 1; j <= aim; j++) {
-            dp[0][j] = max;
-            if (j - arraydemo[0] >= 0 && dp[0][j - arraydemo[0]] != max) {
-                dp[0][j] = dp[0][j - arraydemo[0]] + 1;
+        int n = coins.length;
+        int[][] dp = new int[n][amount + 1];
+        //dp[0][j]只能是那些j为coin[0]整数倍的有值，其他的置为max_value
+        for (int j = 1; j < dp[0].length; j++) {
+            dp[0][j] = Integer.MAX_VALUE;
+            if (j % coins[0] == 0) {
+                dp[0][j] = j / coins[0];
             }
         }
-
-        int left = 0;
-        for (int i = 1; i < n; i++) {
-            for (int j = 1; j <= aim; j++) {
-                left = max;
-                if (j - arraydemo[i] >= 0 && dp[i][j - arraydemo[i]] != max) {
-                    left = dp[i][j - arraydemo[i]] + 1;
+        int left = Integer.MAX_VALUE;
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 1; j < dp[0].length; j++) {
+                left = Integer.MAX_VALUE;  //注意每次要重新置位
+                //dp[i][j - coins[i]] = Integer.MAX_VALUE表示无法组成该货币值
+                if (j >= coins[i] && dp[i][j - coins[i]] != Integer.MAX_VALUE) {
+                    left = dp[i][j - coins[i]] + 1;
                 }
                 dp[i][j] = Math.min(left, dp[i - 1][j]);
             }
         }
-
-
-        return dp[n - 1][aim] != max ? dp[n - 1][aim] : -1;
+        return dp[n - 1][amount] != Integer.MAX_VALUE ? dp[n - 1][amount] : -1;
     }
 
-    public static void main(String[] args) {
-        int arrayDemo[] = {1, 5, 10, 50, 100};
-        int aim = 57;
-
-        int answer = exchangeWays(arrayDemo, aim);
-        System.out.println("# ANSWER= " + answer);
-
+    /**
+     * 兑换硬币的路径
+     *
+     * @param arr
+     * @param aim
+     * @return
+     */
+    public static int numCoinExchange(int[] arr, int aim) {
+        if (arr == null || arr.length <= 0) {
+            return 0;
+        }
+        int[][] dp = new int[arr.length][aim + 1];
+        for (int i = 0; i < dp.length; i++) {
+            dp[i][0] = 1;
+        }
+        for (int j = 0; j < dp[0].length; j++) {
+            if (j % arr[0] == 0) {
+                dp[0][j] = 1;
+            }
+        }
+        int num = 0;
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 1; j < dp[0].length; j++) {
+                num = dp[i - 1][j];
+                num += j >= arr[i] ? dp[i][j - arr[i]] : 0;
+                dp[i][j] = num;
+            }
+        }
+        return dp[arr.length - 1][aim];
     }
 }
