@@ -10,7 +10,8 @@ public class ExchangeDemo {
     public static void main(String[] args) {
         int[] arr1 = new int[]{2, 3, 5};
         int aim1 = 20;
-        System.out.println(minCoinChange(arr1, 20));
+        System.out.println(minCoinChange(arr1, aim1));
+        System.out.println(CoinChange(arr1, aim1));
 
         int[] arr2 = new int[]{1, 5, 10, 25};
         int aim2 = 15;
@@ -80,5 +81,33 @@ public class ExchangeDemo {
             }
         }
         return dp[arr.length - 1][aim];
+    }
+
+    /**
+     * 钱币最少
+     *
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public static int CoinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        // dp[0] 为 0，其他默认为 amount + 1（实际是不可能的），为了方便取对比结果中的最小值
+        for (int i = 1; i < dp.length; i++) {
+            dp[i] = amount + 1;
+        }
+
+        // 计算 1~amount 每项 dp[i] 的值
+        for (int i = 1; i <= amount; i++) {
+            for (int j = 0; j < coins.length; j++) {
+                // 如果i能使用存在的面额来组合，得到每种面值组合后的最小值
+                if (coins[j] <= i) {
+                    dp[i] = Math.min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+
+        // 如果 dp[amount] 是 amount + 1 ，代表没找到组合结果，否则返回组合成 amount 需要的最少硬币数 dp[amount]
+        return dp[amount] > amount ? -1 : dp[amount];
     }
 }
