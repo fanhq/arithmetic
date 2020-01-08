@@ -11,7 +11,7 @@ public class ExchangeDemo {
         int[] arr1 = new int[]{2, 3, 5};
         int aim1 = 20;
         System.out.println(minCoinChange(arr1, aim1));
-        System.out.println(CoinChange(arr1, aim1));
+        System.out.println(coinChange(arr1, aim1));
 
         int[] arr2 = new int[]{1, 5, 10, 25};
         int aim2 = 15;
@@ -90,7 +90,7 @@ public class ExchangeDemo {
      * @param amount
      * @return
      */
-    public static int CoinChange(int[] coins, int amount) {
+    public static int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
         // dp[0] 为 0，其他默认为 amount + 1（实际是不可能的），为了方便取对比结果中的最小值
         for (int i = 1; i < dp.length; i++) {
