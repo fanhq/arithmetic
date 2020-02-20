@@ -1,5 +1,10 @@
 package com.fanhq.example.leetcode;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * @author fanhaiqiu
  * @date 2020/1/21
@@ -65,11 +70,38 @@ public class LeetCode {
             }
             count++;
         }
-        if (flag ){
+        if (flag) {
             ListNode next = new ListNode(1);
             last.next = next;
             last = next;
         }
         return l3;
+    }
+
+    /**
+     * 无重复字符的最长子串
+     *
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+        Set<String> temp = new HashSet<>();
+        int length = s.length();
+        int max = 0;
+        for (int i = 0; i < length; i++) {
+            String val = String.valueOf(s.charAt(i));
+            if (temp.contains(val) && max < temp.size()) {
+                max = temp.size();
+                temp.clear();
+            }
+            temp.add(val);
+        }
+        if (max < temp.size()) {
+            max = temp.size();
+        }
+        return max;
     }
 }
