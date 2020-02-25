@@ -88,16 +88,22 @@ public class LeetCode {
         if (s == null || s.isEmpty()) {
             return 0;
         }
-        Set<String> temp = new HashSet<>();
+        Map<String, Integer> temp = new HashMap<>();
         int length = s.length();
         int max = 0;
-        for (int i = 0; i < length; i++) {
-            String val = String.valueOf(s.charAt(i));
-            if (temp.contains(val) && max < temp.size()) {
-                max = temp.size();
+        int index = 0;
+        while (index < length){
+            String val = String.valueOf(s.charAt(index));
+            if (temp.containsKey(val)) {
+                if (max < temp.size()){
+                    max = temp.size();
+                }
+                index = temp.get(val);
                 temp.clear();
+            }else {
+                temp.put(val, index);
             }
-            temp.add(val);
+            index ++;
         }
         if (max < temp.size()) {
             max = temp.size();
