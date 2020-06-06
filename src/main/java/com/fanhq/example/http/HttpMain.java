@@ -27,6 +27,9 @@ public class HttpMain {
 //        System.out.println(responseBody);
 
         // TrustManager[] trustAllCerts = {new MyX509TrustManager()};
+
+
+        //https
         HostnameVerifier allHostsValid = new HostnameVerifier() {
             public boolean verify(String hostname, SSLSession session) {
                 return true;
