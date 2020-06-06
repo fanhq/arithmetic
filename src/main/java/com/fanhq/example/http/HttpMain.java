@@ -18,6 +18,7 @@ public class HttpMain {
 
 
     public static void main(String[] args) throws Exception {
+
         SSLContext sslContext = sslContext("C:\\Users\\Lenovo\\ssl_server.jks", "Iot@2020");
 //        SSLParameters sslParameters = new SSLParameters();
 //        String responseBody = HttpClient.newBuilder().sslContext(sslContext).sslParameters(sslParameters).build()
@@ -26,7 +27,7 @@ public class HttpMain {
 //                        .build(), HttpResponse.BodyHandlers.ofString()).body();
 //        System.out.println(responseBody);
 
-        // TrustManager[] trustAllCerts = {new MyX509TrustManager()};
+
 
 
         //https
