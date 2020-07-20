@@ -35,7 +35,7 @@ public class Application {
         //String pubTopic = "testtopic/1";
         String content = "Hello World";
         int qos = 2;
-        String broker = "tcp://172.19.19.99:1883";
+        String broker = "tcp://127.0.0.1:1883";
         String clientId = "emqx_test1";
         MemoryPersistence persistence = new MemoryPersistence();
 

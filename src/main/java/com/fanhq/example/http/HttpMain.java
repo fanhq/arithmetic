@@ -2,15 +2,10 @@ package com.fanhq.example.http;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
@@ -24,13 +19,13 @@ public class HttpMain {
 
     public static void main(String[] args) throws Exception {
 
-        SSLContext sslContext = sslContext("C:\\Users\\Lenovo\\ssl_server.jks", "Iot@2020");
-        SSLParameters sslParameters = new SSLParameters();
-        String responseBody = HttpClient.newBuilder().sslContext(sslContext).sslParameters(sslParameters).build()
-                .send(HttpRequest.newBuilder(new URI("https://127.0.0.1:9003/demo/receive"))
-                        .GET()
-                        .build(), HttpResponse.BodyHandlers.ofString()).body();
-        System.out.println(responseBody);
+//        SSLContext sslContext = sslContext("C:\\Users\\Lenovo\\ssl_server.jks", "Iot@2020");
+//        SSLParameters sslParameters = new SSLParameters();
+//        String responseBody = HttpClient.newBuilder().sslContext(sslContext).sslParameters(sslParameters).build()
+//                .send(HttpRequest.newBuilder(new URI("https://127.0.0.1:9003/demo/receive"))
+//                        .GET()
+//                        .build(), HttpResponse.BodyHandlers.ofString()).body();
+//        System.out.println(responseBody);
 
 
         //https
