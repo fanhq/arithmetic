@@ -15,9 +15,9 @@ import java.util.concurrent.TimeUnit;
 public class MqttApplication {
 
     public static void main(String[] args) throws Exception {
-        String subTopic1 = "$sys/Sw8k93en0P/SN_57166507/thing/property";
-        String subTopic2 = "$sys/10086/device003/thing/event";
-        String subTopic3 = "$sys/10086/device003/thing/lifecycle";
+        String subTopic1 = "$sys/Sw8k93en0P/SN_57075624/thing/property";
+        String subTopic2 = "$sys/Sw8k93en0P/SN_57075624/thing/event";
+        String subTopic3 = "$sys/Sw8k93en0P/SN_57075624/thing/lifecycle";
         String broker = "tcp://183.230.102.116:25002";
         String clientId = "emqx_test1";
         MemoryPersistence persistence = new MemoryPersistence();
