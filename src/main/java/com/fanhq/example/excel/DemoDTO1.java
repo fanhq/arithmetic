@@ -10,15 +10,6 @@ import lombok.Data;
 @Data
 public class DemoDTO1 {
 
-    @ExcelProperty("房屋全称")
-    private String roomName;
-
-    @ExcelProperty("是否交房")
-    private String tokeRoom;
-
-    @ExcelProperty("是否入住")
-    private String tokeIn;
-
-    @ExcelProperty("是否装修")
-    private String tokeDo;
+    @ExcelProperty("资源名称")
+    private String name;
 }
