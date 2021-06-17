@@ -19,7 +19,7 @@ public class CustomConsumer {
     public static void main(String[] args) throws Exception{
         Properties props = new Properties();
         props.setProperty("bootstrap.servers", "172.19.3.194:9092,172.19.3.195:9092,172.19.3.196:9092");
-        props.setProperty("group.id", "test");
+        props.setProperty("group.id", "test001");
         props.setProperty("enable.auto.commit", "true");
         props.setProperty("auto.commit.interval.ms", "1000");
         props.setProperty("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
@@ -28,7 +28,7 @@ public class CustomConsumer {
         props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
         props.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-512");
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList("test"));
+        consumer.subscribe(Arrays.asList("test001"));
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
             for (ConsumerRecord<String, String> record : records){
