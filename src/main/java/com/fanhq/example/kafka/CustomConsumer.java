@@ -18,7 +18,7 @@ public class CustomConsumer {
 
     public static void main(String[] args) throws Exception{
         Properties props = new Properties();
-        props.setProperty("bootstrap.servers", "172.19.3.194:9092,172.19.3.195:9092,172.19.3.196:9092");
+        props.setProperty("bootstrap.servers", "172.19.3.194:9093,172.19.3.195:9093,172.19.3.196:9093");
         props.setProperty("group.id", "test001");
         props.setProperty("enable.auto.commit", "true");
         props.setProperty("auto.commit.interval.ms", "1000");
