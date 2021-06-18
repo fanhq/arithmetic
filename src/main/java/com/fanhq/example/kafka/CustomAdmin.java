@@ -1,10 +1,10 @@
 package com.fanhq.example.kafka;
 
 import org.apache.kafka.clients.admin.*;
+import org.apache.kafka.common.config.ConfigResource;
 import org.apache.kafka.common.config.SaslConfigs;
 
-import java.util.Arrays;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author: fanhaiqiu
@@ -53,9 +53,41 @@ public class CustomAdmin {
 //        alterUserScramCredentialsResult.all().get();
 //        System.out.println(alterUserScramCredentialsResult.all().isDone());
 
-        UserScramCredentialDeletion userScramCredentialDeletion = new UserScramCredentialDeletion("test_user", ScramMechanism.SCRAM_SHA_512);
-        AlterUserScramCredentialsResult alterUserScramCredentialsResult = adminClient.alterUserScramCredentials(Arrays.asList(userScramCredentialDeletion));
-        alterUserScramCredentialsResult.all().get();
-        System.out.println(alterUserScramCredentialsResult.all().isDone());
+        //删除用户
+//        UserScramCredentialDeletion userScramCredentialDeletion = new UserScramCredentialDeletion("test_user", ScramMechanism.SCRAM_SHA_512);
+//        AlterUserScramCredentialsResult alterUserScramCredentialsResult = adminClient.alterUserScramCredentials(Arrays.asList(userScramCredentialDeletion));
+//        alterUserScramCredentialsResult.all().get();
+//        System.out.println(alterUserScramCredentialsResult.all().isDone());
+
+        //用户配额
+//        Map<String, String> entries = new HashMap<>();
+//        entries.put("user", "fanhaiqiu");
+//        ClientQuotaEntity clientQuotaEntity = new ClientQuotaEntity(entries);
+//        //生产配额
+//        ClientQuotaAlteration.Op op1 = new ClientQuotaAlteration.Op("producer_byte_rate", 64.00);
+//        //消费配额
+//        ClientQuotaAlteration.Op op2 = new ClientQuotaAlteration.Op("consumer_byte_rate", 64.00);
+//        ClientQuotaAlteration  clientQuotaAlteration = new ClientQuotaAlteration(clientQuotaEntity, Arrays.asList(op1, op2));
+//        AlterClientQuotasResult alterClientQuotasResult = adminClient.alterClientQuotas(Arrays.asList(clientQuotaAlteration));
+//        alterClientQuotasResult.all().get();
+//        System.out.println(alterClientQuotasResult.all().isDone());
+
+        //配置管理
+//        Map<ConfigResource, Collection<AlterConfigOp>> configs = new HashMap<>();
+//        ConfigResource configResource = new ConfigResource(ConfigResource.Type.TOPIC, "test001");
+//        ConfigEntry configEntry = new ConfigEntry("delete.retention.ms", "86400000");
+//        AlterConfigOp alterConfigOp = new AlterConfigOp(configEntry, AlterConfigOp.OpType.SET);
+//        configs.put(configResource, Arrays.asList(alterConfigOp));
+//        AlterConfigsResult alterConfigsResult = adminClient.incrementalAlterConfigs(configs);
+//        alterConfigsResult.all().get();
+//        System.out.println(alterConfigsResult.all().isDone());
+
+        //配置查询
+        ConfigResource configResource = new ConfigResource(ConfigResource.Type.TOPIC, "test001");
+        DescribeConfigsResult describeConfigsResult = adminClient.describeConfigs(Arrays.asList(configResource));
+        Map<ConfigResource, Config> configResourceConfigMap = describeConfigsResult.all().get();
+        configResourceConfigMap.forEach((k, v)->{
+            System.out.println(k.toString() + ":" + v.toString());
+        });
     }
 }

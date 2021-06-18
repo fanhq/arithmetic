@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.config.SaslConfigs;
 
 import java.util.Properties;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,7 +28,7 @@ public class CustomProducer {
 
         Producer<String, String> producer = new KafkaProducer<>(props);
         for (int i = 0; i < 100; i++) {
-            producer.send(new ProducerRecord<String, String>("test001", Integer.toString(i), Integer.toString(i)), new Callback() {
+            Future<RecordMetadata> result = producer.send(new ProducerRecord<String, String>("test001", Integer.toString(i), "hello world"), new Callback() {
 
                 @Override
                 public void onCompletion(RecordMetadata metadata, Exception exception) {
@@ -35,6 +36,7 @@ public class CustomProducer {
                     System.out.println(metadata.toString());
                 }
             });
+            System.out.println(result.get().toString());
         }
         TimeUnit.SECONDS.sleep(3);
         producer.close();
