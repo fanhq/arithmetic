@@ -2,10 +2,7 @@ package com.fanhq.example.kafka;
 
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
-import org.apache.kafka.common.Metric;
-import org.apache.kafka.common.MetricName;
-import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.TopicPartitionReplica;
+import org.apache.kafka.common.*;
 import org.apache.kafka.common.acl.*;
 import org.apache.kafka.common.config.ConfigResource;
 import org.apache.kafka.common.config.SaslConfigs;
@@ -36,6 +33,9 @@ public class CustomAdmin {
         props.put("request.timeout.ms", 600000);
         //props.put("metric.reporters", "org.apache.kafka.common.metrics.JmxReporter");
         AdminClient adminClient = AdminClient.create(props);
+//        DescribeClusterResult describeClusterResult = adminClient.describeCluster();
+//        Collection<Node> nodes = describeClusterResult.nodes().get();
+//        System.out.println(nodes);
 
 //        while (true) {
 //            Map<MetricName, ? extends Metric> metrics = adminClient.metrics();
@@ -59,27 +59,27 @@ public class CustomAdmin {
 //        });
 
         //修改offset
-        TopicPartition partition  = new TopicPartition("test002", 0);
-        OffsetAndMetadata metadata = new OffsetAndMetadata(8295600L);
-        Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
-        offsets.put(partition, metadata);
-        AlterConsumerGroupOffsetsResult alterOffsetsResult = adminClient.alterConsumerGroupOffsets("test002", offsets);
-        alterOffsetsResult.all().get();
-        System.out.println(alterOffsetsResult.all().isDone());
+//        TopicPartition partition  = new TopicPartition("test002", 0);
+//        OffsetAndMetadata metadata = new OffsetAndMetadata(8295600L);
+//        Map<TopicPartition, OffsetAndMetadata> offsets = new HashMap<>();
+//        offsets.put(partition, metadata);
+//        AlterConsumerGroupOffsetsResult alterOffsetsResult = adminClient.alterConsumerGroupOffsets("test002", offsets);
+//        alterOffsetsResult.all().get();
+//        System.out.println(alterOffsetsResult.all().isDone());
 
-//        //创建topic
-//        NewTopic topic = new NewTopic("test002", 3, (short) 2);
+        //创建topic
+//        NewTopic topic = new NewTopic("test001", 3, (short) 1);
 //        CreateTopicsResult createTopicsResult = adminClient.createTopics(Arrays.asList(topic));
 //        createTopicsResult.all().get();
 //        System.out.println(createTopicsResult.all().isDone());
         //删除topic
-//        DeleteTopicsResult deleteTopicsResult = adminClient.deleteTopics(Arrays.asList("test002"));
+//        DeleteTopicsResult deleteTopicsResult = adminClient.deleteTopics(Arrays.asList("test001"));
 //        System.out.println(deleteTopicsResult.all().get());
 
 //        ListTopicsResult listTopicsResult = adminClient.listTopics();
 //        System.out.println(listTopicsResult.listings().get());
-
-        //查询
+//
+//        //查询
 //        DescribeConsumerGroupsResult describeConsumerGroupsResult = adminClient.describeConsumerGroups(Arrays.asList("test002"));
 //        System.out.println(describeConsumerGroupsResult.all().get());
 //        ListConsumerGroupOffsetsResult listConsumerGroupOffsetsResult = adminClient.listConsumerGroupOffsets("test002");
@@ -100,8 +100,8 @@ public class CustomAdmin {
 
 
         //授权
-//        ResourcePattern resourcePattern = new ResourcePattern(ResourceType.GROUP, "test002", PatternType.LITERAL);
-//        AccessControlEntry accessControlEntry = new AccessControlEntry("User:fanhaiqiu", "192.168.200.48", AclOperation.READ, AclPermissionType.ALLOW);
+//        ResourcePattern resourcePattern = new ResourcePattern(ResourceType.TOPIC, "test001", PatternType.LITERAL);
+//        AccessControlEntry accessControlEntry = new AccessControlEntry("User:fanhaiqiu", "*", AclOperation.READ, AclPermissionType.ALLOW);
 //        AclBinding aclBinding = new AclBinding(resourcePattern, accessControlEntry);
 //        CreateAclsResult createAclsResult = adminClient.createAcls(Arrays.asList(aclBinding));
 //        createAclsResult.all().get();
@@ -109,8 +109,8 @@ public class CustomAdmin {
 
 
         //删除权限
-//        ResourcePatternFilter resourcePatternFilter = new ResourcePatternFilter(ResourceType.TOPIC, "test002", PatternType.LITERAL);
-//        AccessControlEntryFilter accessControlEntryFilter = new AccessControlEntryFilter("User:fanhaiqiu", "192.168.200.48", AclOperation.READ, AclPermissionType.ALLOW);
+//        ResourcePatternFilter resourcePatternFilter = new ResourcePatternFilter(ResourceType.GROUP, "test002", PatternType.LITERAL);
+//        AccessControlEntryFilter accessControlEntryFilter = new AccessControlEntryFilter("User:fanhaiqiu", null, AclOperation.READ, AclPermissionType.ALLOW);
 //        AclBindingFilter aclBinding = new AclBindingFilter(resourcePatternFilter, accessControlEntryFilter);
 //        DeleteAclsResult deleteAclsResult = adminClient.deleteAcls(Arrays.asList(aclBinding));
 //        deleteAclsResult.all().get();
@@ -118,7 +118,7 @@ public class CustomAdmin {
 
         //新增用户
 //        ScramCredentialInfo credentialInfo = new ScramCredentialInfo(ScramMechanism.SCRAM_SHA_512, 4096);
-//        UserScramCredentialUpsertion userScramCredentialUpsertion = new UserScramCredentialUpsertion("wangjianlin", credentialInfo, "iot@10086");
+//        UserScramCredentialUpsertion userScramCredentialUpsertion = new UserScramCredentialUpsertion("fanhaiqiu", credentialInfo, "iot@100861");
 //        AlterUserScramCredentialsResult alterUserScramCredentialsResult = adminClient.alterUserScramCredentials(Arrays.asList(userScramCredentialUpsertion));
 //        alterUserScramCredentialsResult.all().get();
 //        System.out.println(alterUserScramCredentialsResult.all().isDone());
@@ -130,25 +130,25 @@ public class CustomAdmin {
 //        System.out.println(alterUserScramCredentialsResult.all().isDone());
 
         //用户配额
-//        Map<String, String> entries = new HashMap<>();
-//        entries.put("user", "fanhaiqiu");
-//        ClientQuotaEntity clientQuotaEntity = new ClientQuotaEntity(entries);
-//        //生产配额
-//        //ClientQuotaAlteration.Op op1 = new ClientQuotaAlteration.Op("producer_byte_rate", 1024.00);
-//        //消费配额
-//        ClientQuotaAlteration.Op op2 = new ClientQuotaAlteration.Op("consumer_byte_rate", 33554432.00);
-//        ClientQuotaAlteration  clientQuotaAlteration = new ClientQuotaAlteration(clientQuotaEntity, Arrays.asList(op2));
-//        AlterClientQuotasResult alterClientQuotasResult = adminClient.alterClientQuotas(Arrays.asList(clientQuotaAlteration));
-//        alterClientQuotasResult.all().get();
-//        System.out.println(alterClientQuotasResult.all().isDone());
+        Map<String, String> entries = new HashMap<>();
+        entries.put("user", "fanhaiqiu");
+        ClientQuotaEntity clientQuotaEntity = new ClientQuotaEntity(entries);
+        //生产配额
+        //ClientQuotaAlteration.Op op1 = new ClientQuotaAlteration.Op("producer_byte_rate", 1024.00);
+        //消费配额
+        ClientQuotaAlteration.Op op2 = new ClientQuotaAlteration.Op("consumer_byte_rate", 33554432.00);
+        ClientQuotaAlteration  clientQuotaAlteration = new ClientQuotaAlteration(clientQuotaEntity, Arrays.asList(op2));
+        AlterClientQuotasResult alterClientQuotasResult = adminClient.alterClientQuotas(Arrays.asList(clientQuotaAlteration));
+        alterClientQuotasResult.all().get();
+        System.out.println(alterClientQuotasResult.all().isDone());
 
-//        ClientQuotaFilterComponent component = ClientQuotaFilterComponent.ofEntity("user", "fanhaiqiu");
-//        ClientQuotaFilter filter = ClientQuotaFilter.contains(Arrays.asList(component));
-//        DescribeClientQuotasResult describeClientQuotasResult = adminClient.describeClientQuotas(filter);
-//        Map<ClientQuotaEntity, Map<String, Double>> clientQuotaEntityMapMap = describeClientQuotasResult.entities().get();
-//        clientQuotaEntityMapMap.forEach((k, v) -> {
-//            System.out.println(k + ":" + v);
-//        });
+        ClientQuotaFilterComponent component = ClientQuotaFilterComponent.ofEntity("user", "admin");
+        ClientQuotaFilter filter = ClientQuotaFilter.contains(Arrays.asList(component));
+        DescribeClientQuotasResult describeClientQuotasResult = adminClient.describeClientQuotas(filter);
+        Map<ClientQuotaEntity, Map<String, Double>> clientQuotaEntityMapMap = describeClientQuotasResult.entities().get();
+        clientQuotaEntityMapMap.forEach((k, v) -> {
+            System.out.println(k + ":" + v);
+        });
 
         //配置管理
 //        Map<ConfigResource, Collection<AlterConfigOp>> configs = new HashMap<>();

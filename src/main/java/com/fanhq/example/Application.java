@@ -4,8 +4,14 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import delight.nashornsandbox.NashornSandbox;
 import delight.nashornsandbox.NashornSandboxes;
 
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+import java.util.UUID;
 import java.util.concurrent.*;
 
 /**
@@ -19,35 +25,39 @@ public class Application {
     //  private final ThreadLocal<NashornSandbox> threadLocal = ThreadLocal.withInitial(this::createNashornSandbox);
 
     public static void main(String[] args) throws Exception {
-        System.out.println("梁园区白云街道团街路与归德路交叉口向东30米路北侧王家白吉馍".getBytes().length);
 
-        // ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        //NashornScriptEngine engine = (NashornScriptEngine) scriptEngineManager.getEngineByName("nashorn");
-        String js1 = "function welcom(name){print('hello world'); return  new Date().getTime()}";
-        String js2 = "function byteToString(arr) {\n" +
-                "    if(typeof arr === 'string') {  \n" +
-                "        return arr;  \n" +
-                "    }  \n" +
-                "    arr[0]= arr[0]<<16\n" +
-                "    arr[1]=arr[0]<<8\n" +
-                "    return arr[0] + arr[1]+ arr[2];\n" +
-                "} ";
-        int processors = Runtime.getRuntime().availableProcessors();
-        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("nashorn-pool-%d").build();
-        ExecutorService executorService = new ThreadPoolExecutor(processors, 2 * processors,
-                30, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1000), threadFactory);
-        NashornSandbox sandbox = NashornSandboxes.create();
-        //NativeArrayBuffer.
-        sandbox.setExecutor(executorService);
-        for (int i = 0; i < 1000; i++) {
-            long start = System.currentTimeMillis();
-            if (i % 2 == 0) {
-                sandbox.eval(js2);
-            } else {
-                sandbox.eval(js1);
-            }
-            System.out.println(System.currentTimeMillis() - start);
-        }
+
+//        System.out.println(Integer.MAX_VALUE);
+//        System.out.println(Base64.getDecoder().decode("MTM4MTc2Mjg4NDgK"));
+//        System.out.println(UUID.randomUUID().toString());
+//
+//        // ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
+//        //NashornScriptEngine engine = (NashornScriptEngine) scriptEngineManager.getEngineByName("nashorn");
+//        String js1 = "function welcom(name){print('hello world'); return  new Date().getTime()}";
+//        String js2 = "function byteToString(arr) {\n" +
+//                "    if(typeof arr === 'string') {  \n" +
+//                "        return arr;  \n" +
+//                "    }  \n" +
+//                "    arr[0]= arr[0]<<16\n" +
+//                "    arr[1]=arr[0]<<8\n" +
+//                "    return arr[0] + arr[1]+ arr[2];\n" +
+//                "} ";
+//        int processors = Runtime.getRuntime().availableProcessors();
+//        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("nashorn-pool-%d").build();
+//        ExecutorService executorService = new ThreadPoolExecutor(processors, 2 * processors,
+//                30, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1000), threadFactory);
+//        NashornSandbox sandbox = NashornSandboxes.create();
+//        //NativeArrayBuffer.
+//        sandbox.setExecutor(executorService);
+//        for (int i = 0; i < 1000; i++) {
+//            long start = System.currentTimeMillis();
+//            if (i % 2 == 0) {
+//                sandbox.eval(js2);
+//            } else {
+//                sandbox.eval(js1);
+//            }
+//            System.out.println(System.currentTimeMillis() - start);
+//        }
 //        Application application = new Application();
 //        NashornSandbox sandbox = application.threadLocal.get();
 //        long start = System.currentTimeMillis();

@@ -30,9 +30,9 @@ public class CustomProducer {
         Producer<String, String> producer = new KafkaProducer<>(props);
         long start = System.currentTimeMillis();
         for (int i = 0; i < 10000000; i++) {
-            Future<RecordMetadata> result = producer.send(new ProducerRecord<String, String>("test002", Integer.toString(i), "hello world"));
-//            System.out.println(result.get().toString());
-//            TimeUnit.MILLISECONDS.sleep(500);
+            Future<RecordMetadata> result = producer.send(new ProducerRecord<String, String>("UuSA_test002", Integer.toString(i), "hello world"));
+            System.out.println(result.get().toString());
+            TimeUnit.MILLISECONDS.sleep(500);
         }
         System.out.println("end: " + (System.currentTimeMillis() - start));
         TimeUnit.SECONDS.sleep(3);
