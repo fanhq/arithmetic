@@ -26,13 +26,19 @@ public class CustomAdmin {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "172.19.3.194:9093,172.19.3.195:9093,172.19.3.196:9093");
-        props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"iot@10086\";");
+        props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "172.19.3.194:9092,172.19.3.195:9092,172.19.3.196:9092");
+        props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin1\" password=\"iot@10086\";");
         props.put(AdminClientConfig.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
         props.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-512");
         props.put("request.timeout.ms", 600000);
         //props.put("metric.reporters", "org.apache.kafka.common.metrics.JmxReporter");
         AdminClient adminClient = AdminClient.create(props);
+
+        DescribeClusterOptions describeClusterOptions = new DescribeClusterOptions();
+        describeClusterOptions.timeoutMs(10000);
+        DescribeClusterResult describeClusterResult = adminClient.describeCluster();
+        Collection<Node> nodes = describeClusterResult.nodes().get();
+        System.out.println(nodes);
 //        DescribeClusterResult describeClusterResult = adminClient.describeCluster();
 //        Collection<Node> nodes = describeClusterResult.nodes().get();
 //        System.out.println(nodes);
@@ -130,25 +136,25 @@ public class CustomAdmin {
 //        System.out.println(alterUserScramCredentialsResult.all().isDone());
 
         //用户配额
-        Map<String, String> entries = new HashMap<>();
-        entries.put("user", "fanhaiqiu");
-        ClientQuotaEntity clientQuotaEntity = new ClientQuotaEntity(entries);
-        //生产配额
-        //ClientQuotaAlteration.Op op1 = new ClientQuotaAlteration.Op("producer_byte_rate", 1024.00);
-        //消费配额
-        ClientQuotaAlteration.Op op2 = new ClientQuotaAlteration.Op("consumer_byte_rate", 33554432.00);
-        ClientQuotaAlteration  clientQuotaAlteration = new ClientQuotaAlteration(clientQuotaEntity, Arrays.asList(op2));
-        AlterClientQuotasResult alterClientQuotasResult = adminClient.alterClientQuotas(Arrays.asList(clientQuotaAlteration));
-        alterClientQuotasResult.all().get();
-        System.out.println(alterClientQuotasResult.all().isDone());
-
-        ClientQuotaFilterComponent component = ClientQuotaFilterComponent.ofEntity("user", "admin");
-        ClientQuotaFilter filter = ClientQuotaFilter.contains(Arrays.asList(component));
-        DescribeClientQuotasResult describeClientQuotasResult = adminClient.describeClientQuotas(filter);
-        Map<ClientQuotaEntity, Map<String, Double>> clientQuotaEntityMapMap = describeClientQuotasResult.entities().get();
-        clientQuotaEntityMapMap.forEach((k, v) -> {
-            System.out.println(k + ":" + v);
-        });
+//        Map<String, String> entries = new HashMap<>();
+//        entries.put("user", "fanhaiqiu");
+//        ClientQuotaEntity clientQuotaEntity = new ClientQuotaEntity(entries);
+//        //生产配额
+//        //ClientQuotaAlteration.Op op1 = new ClientQuotaAlteration.Op("producer_byte_rate", 1024.00);
+//        //消费配额
+//        ClientQuotaAlteration.Op op2 = new ClientQuotaAlteration.Op("consumer_byte_rate", 33554432.00);
+//        ClientQuotaAlteration  clientQuotaAlteration = new ClientQuotaAlteration(clientQuotaEntity, Arrays.asList(op2));
+//        AlterClientQuotasResult alterClientQuotasResult = adminClient.alterClientQuotas(Arrays.asList(clientQuotaAlteration));
+//        alterClientQuotasResult.all().get();
+//        System.out.println(alterClientQuotasResult.all().isDone());
+//
+//        ClientQuotaFilterComponent component = ClientQuotaFilterComponent.ofEntity("user", "admin");
+//        ClientQuotaFilter filter = ClientQuotaFilter.contains(Arrays.asList(component));
+//        DescribeClientQuotasResult describeClientQuotasResult = adminClient.describeClientQuotas(filter);
+//        Map<ClientQuotaEntity, Map<String, Double>> clientQuotaEntityMapMap = describeClientQuotasResult.entities().get();
+//        clientQuotaEntityMapMap.forEach((k, v) -> {
+//            System.out.println(k + ":" + v);
+//        });
 
         //配置管理
 //        Map<ConfigResource, Collection<AlterConfigOp>> configs = new HashMap<>();

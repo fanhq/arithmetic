@@ -3,14 +3,19 @@ package com.fanhq.example;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import delight.nashornsandbox.NashornSandbox;
 import delight.nashornsandbox.NashornSandboxes;
+import org.joda.time.DateTime;
+import org.joda.time.Months;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.text.DateFormat;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.*;
 
@@ -19,13 +24,24 @@ import java.util.concurrent.*;
  */
 public class Application {
 
-    private static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+    //private static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
     private static ZoneOffset ZONE_OFFSET_EIGHT = ZoneOffset.ofHours(8);
 
     //  private final ThreadLocal<NashornSandbox> threadLocal = ThreadLocal.withInitial(this::createNashornSandbox);
 
     public static void main(String[] args) throws Exception {
-
+        String formatDate = DateFormat.getDateInstance().format(new Date());
+        System.out.println("当前系统时间="+formatDate);
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        DateTime start = formatter.parseDateTime("2019-11-11");
+        DateTime end = formatter.parseDateTime(formatDate);
+        System.out.println("开始时间="+start);
+        System.out.println("结束时间="+end);
+        //end-start 结果可为负数、正数、0
+        int months = Months.monthsBetween(start, end).getMonths();
+        //取绝对值
+        System.out.println("结束时间-开始时间="+Math.abs(months)+"(月)");
+        System.out.println(months);
 
 //        System.out.println(Integer.MAX_VALUE);
 //        System.out.println(Base64.getDecoder().decode("MTM4MTc2Mjg4NDgK"));

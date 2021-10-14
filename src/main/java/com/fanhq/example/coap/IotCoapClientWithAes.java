@@ -55,7 +55,8 @@ public class IotCoapClientWithAes {
     private static String serverURI = "coap://" + productKey + ".coap." + regionId + ".link.aliyuncs.com:5682";
 
     // 发送消息用的Topic。需要在控制台自定义Topic，设备操作权限需选择为“发布”。
-    private static String updateTopic = "/" + productKey + "/" + deviceName + "/user/update";
+   // private static String updateTopic = "/" + productKey + "/" + deviceName + "/user/update";
+    private static String updateTopic = "/sys/" + productKey + "/" + deviceName + "/thing/event/property/post";
 
     // token option
     private static final int COAP2_OPTION_TOKEN = 2088;
@@ -345,7 +346,7 @@ public class IotCoapClientWithAes {
     public static void main(String[] args) throws InterruptedException {
         IotCoapClientWithAes client = new IotCoapClientWithAes();
         client.connect(productKey, deviceName, deviceSecret);
-        client.publish(updateTopic, "hello coap".getBytes(StandardCharsets.UTF_8));
-        client.publish(updateTopic, new byte[] { 0x01, 0x02, 0x03, 0x05 });
+        client.publish(updateTopic, "{ \"id\": \"1\", \"version\": \"1.0\", \"sys\":{ \"ack\":0 }, \"params\": { \"Light\": { \"value\": 8.8}, \"method\": \"thing.event.property.post\" }}".getBytes(StandardCharsets.UTF_8));
+       // client.publish(updateTopic, new byte[] { 0x01, 0x02, 0x03, 0x05 });
     }
 }
