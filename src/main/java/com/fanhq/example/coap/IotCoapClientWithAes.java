@@ -41,11 +41,11 @@ public class IotCoapClientWithAes {
     // 地域ID，以华东2（上海）为例。
     private static String regionId = "cn-shanghai";
     // 产品productKey。
-    private static String productKey = "a1e2qOnuhKe";
+    private static String productKey = "a13L9KSDxvO";
     // 设备名成deviceName。
     private static String deviceName = "test001";
     // 设备密钥deviceSecret。
-    private static String deviceSecret = "4e5c819efcd0bb66db64271de77cf9de";
+    private static String deviceSecret = "86776b78a54a3fa4c9ba137a02405e01";
     // ===================需要用户填写的参数，结束。===========================
 
     // 定义加密方式，MAC算法可选以下算法：HmacMD5、HmacSHA1，需与signmethod一致。
@@ -136,7 +136,9 @@ public class IotCoapClientWithAes {
             // AES加密seq，seq=RandomUtils.nextInt()。
             String shaKey = encod(deviceSecret + "," + random);
             byte[] keys = Hex.decodeHex(shaKey.substring(DIGITAL_16, DIGITAL_48));
-            byte[] seqBytes = encrypt(String.valueOf(RandomUtils.nextInt()).getBytes(StandardCharsets.UTF_8), keys);
+
+            String test = String.valueOf(RandomUtils.nextInt()) ;
+            byte[] seqBytes = encrypt(test.getBytes(StandardCharsets.UTF_8), keys);
 
             // 只支持POST方法。
             Request request = new Request(CoAP.Code.POST, CoAP.Type.CON);
@@ -346,7 +348,7 @@ public class IotCoapClientWithAes {
     public static void main(String[] args) throws InterruptedException {
         IotCoapClientWithAes client = new IotCoapClientWithAes();
         client.connect(productKey, deviceName, deviceSecret);
-        client.publish(updateTopic, "{ \"id\": \"1\", \"version\": \"1.0\", \"sys\":{ \"ack\":0 }, \"params\": { \"Light\": { \"value\": 8.8}, \"method\": \"thing.event.property.post\" }}".getBytes(StandardCharsets.UTF_8));
+        client.publish(updateTopic, "{ \"id\": \"1\", \"version\": \"1.0\", \"sys\":{ \"ack\":0 }, \"params\": { \"Temp\": { \"value\": 8.8}, \"method\": \"thing.event.property.post\" }}".getBytes(StandardCharsets.UTF_8));
        // client.publish(updateTopic, new byte[] { 0x01, 0x02, 0x03, 0x05 });
     }
 }

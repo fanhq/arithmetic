@@ -26,8 +26,8 @@ public class CustomAdmin {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "172.19.3.194:9092,172.19.3.195:9092,172.19.3.196:9092");
-        props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin1\" password=\"iot@10086\";");
+        props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "172.19.3.194:9092,172.19.3.194:9092,172.19.3.194:9092");
+        props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"iot@10086\";");
         props.put(AdminClientConfig.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
         props.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-512");
         props.put("request.timeout.ms", 600000);
@@ -74,7 +74,7 @@ public class CustomAdmin {
 //        System.out.println(alterOffsetsResult.all().isDone());
 
         //创建topic
-//        NewTopic topic = new NewTopic("test001", 3, (short) 1);
+//        NewTopic topic = new NewTopic("test004", 3, (short) 1);
 //        CreateTopicsResult createTopicsResult = adminClient.createTopics(Arrays.asList(topic));
 //        createTopicsResult.all().get();
 //        System.out.println(createTopicsResult.all().isDone());
@@ -106,8 +106,8 @@ public class CustomAdmin {
 
 
         //授权
-//        ResourcePattern resourcePattern = new ResourcePattern(ResourceType.TOPIC, "test001", PatternType.LITERAL);
-//        AccessControlEntry accessControlEntry = new AccessControlEntry("User:fanhaiqiu", "*", AclOperation.READ, AclPermissionType.ALLOW);
+//        ResourcePattern resourcePattern = new ResourcePattern(ResourceType.TOPIC, "test004", PatternType.LITERAL);
+//        AccessControlEntry accessControlEntry = new AccessControlEntry("User:fanhaiqiu", "0.0.0.0", AclOperation.READ, AclPermissionType.ALLOW);
 //        AclBinding aclBinding = new AclBinding(resourcePattern, accessControlEntry);
 //        CreateAclsResult createAclsResult = adminClient.createAcls(Arrays.asList(aclBinding));
 //        createAclsResult.all().get();
@@ -124,7 +124,7 @@ public class CustomAdmin {
 
         //新增用户
 //        ScramCredentialInfo credentialInfo = new ScramCredentialInfo(ScramMechanism.SCRAM_SHA_512, 4096);
-//        UserScramCredentialUpsertion userScramCredentialUpsertion = new UserScramCredentialUpsertion("fanhaiqiu", credentialInfo, "iot@100861");
+//        UserScramCredentialUpsertion userScramCredentialUpsertion = new UserScramCredentialUpsertion("fanhaiqiu", credentialInfo, "iot@10086");
 //        AlterUserScramCredentialsResult alterUserScramCredentialsResult = adminClient.alterUserScramCredentials(Arrays.asList(userScramCredentialUpsertion));
 //        alterUserScramCredentialsResult.all().get();
 //        System.out.println(alterUserScramCredentialsResult.all().isDone());

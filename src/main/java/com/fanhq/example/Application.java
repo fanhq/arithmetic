@@ -1,22 +1,14 @@
 package com.fanhq.example;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import delight.nashornsandbox.NashornSandbox;
 import delight.nashornsandbox.NashornSandboxes;
-import org.joda.time.DateTime;
-import org.joda.time.Months;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.text.DateFormat;
 import java.time.ZoneOffset;
-import java.util.Base64;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 import java.util.concurrent.*;
 
 /**
@@ -30,60 +22,53 @@ public class Application {
     //  private final ThreadLocal<NashornSandbox> threadLocal = ThreadLocal.withInitial(this::createNashornSandbox);
 
     public static void main(String[] args) throws Exception {
-        String formatDate = DateFormat.getDateInstance().format(new Date());
-        System.out.println("当前系统时间="+formatDate);
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
-        DateTime start = formatter.parseDateTime("2019-11-11");
-        DateTime end = formatter.parseDateTime(formatDate);
-        System.out.println("开始时间="+start);
-        System.out.println("结束时间="+end);
-        //end-start 结果可为负数、正数、0
-        int months = Months.monthsBetween(start, end).getMonths();
-        //取绝对值
-        System.out.println("结束时间-开始时间="+Math.abs(months)+"(月)");
-        System.out.println(months);
-
-//        System.out.println(Integer.MAX_VALUE);
-//        System.out.println(Base64.getDecoder().decode("MTM4MTc2Mjg4NDgK"));
-//        System.out.println(UUID.randomUUID().toString());
-//
-//        // ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-//        //NashornScriptEngine engine = (NashornScriptEngine) scriptEngineManager.getEngineByName("nashorn");
-//        String js1 = "function welcom(name){print('hello world'); return  new Date().getTime()}";
-//        String js2 = "function byteToString(arr) {\n" +
-//                "    if(typeof arr === 'string') {  \n" +
-//                "        return arr;  \n" +
-//                "    }  \n" +
-//                "    arr[0]= arr[0]<<16\n" +
-//                "    arr[1]=arr[0]<<8\n" +
-//                "    return arr[0] + arr[1]+ arr[2];\n" +
-//                "} ";
-//        int processors = Runtime.getRuntime().availableProcessors();
-//        ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("nashorn-pool-%d").build();
-//        ExecutorService executorService = new ThreadPoolExecutor(processors, 2 * processors,
-//                30, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1000), threadFactory);
-//        NashornSandbox sandbox = NashornSandboxes.create();
-//        //NativeArrayBuffer.
-//        sandbox.setExecutor(executorService);
-//        for (int i = 0; i < 1000; i++) {
-//            long start = System.currentTimeMillis();
-//            if (i % 2 == 0) {
-//                sandbox.eval(js2);
-//            } else {
-//                sandbox.eval(js1);
-//            }
-//            System.out.println(System.currentTimeMillis() - start);
+        long l = 1000 * 60 * 60 * 24 * 180L;
+        System.out.println(System.currentTimeMillis() - l);
+        //long time = System.currentTimeMillis() / 1000 / 60 / 7;
+        //System.out.println(time);
+        //Calendar cal = Calendar.getInstance();
+        //int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        //System.out.println(w);
+        //long time = System.currentTimeMillis();//2736483/2736484
+        //System.out.println(time);
+        //System.out.println(time/1000/60/10);
+//        RandomAccessFile randomAccessFile = new RandomAccessFile("D:\\data\\test.txt", "rw");
+////        randomAccessFile.writeLong(1L);
+////        randomAccessFile.writeLong(2L);
+////        randomAccessFile.writeLong(3L);
+////        randomAccessFile.writeLong(4L);
+////        randomAccessFile.writeLong(5L);
+//        randomAccessFile.seek(8);
+//        long data = randomAccessFile.readLong();
+//        System.out.println(data);
+//        randomAccessFile.close();
+//        int sum = 0;
+//        for (int i = 1; i <16; i ++){
+//            sum = sum + getSkipCycle4NextSend(i);
 //        }
-//        Application application = new Application();
-//        NashornSandbox sandbox = application.threadLocal.get();
-//        long start = System.currentTimeMillis();
-//        sandbox.eval(js);
-//        Object result = sandbox.getSandboxedInvocable().invokeFunction("welcom", "Nashorn" );
-//        System.out.println(result);
-//        System.out.println(System.currentTimeMillis() - start);
-//        String a = "3_0_0";
-//        byte[] bytes = a.getBytes();
-//        System.out.println(bytes);
+//        System.out.println(sum);
+    }
+
+    public static int getSkipCycle4NextSend(int sentTimes) {
+        int sum = 0;
+        int defaultSum = 1596;
+        //程序中由于多线程的的交替执行，可能会导致sentTimes很大，导致下面的for循环卡死，进而不会释放MemoryMessagePipe
+        //导致其它线程block
+        if (sentTimes >= 15) {
+            return defaultSum;
+        }
+        for (int i = 1; i <= sentTimes; i++) {
+            sum += fibonacci(i);
+        }
+        return sum;
+    }
+
+    public static int fibonacci(int n) {
+        if (n <= 2) {
+            return 1;
+        } else {
+            return fibonacci(n - 1) + fibonacci(n - 2);
+        }
     }
 
 
@@ -107,6 +92,25 @@ public class Application {
         NashornSandbox sandbox = NashornSandboxes.create();
         sandbox.setExecutor(executorService);
         return sandbox;
+    }
+
+    /**
+     * 获取两个日期相差的月数
+     */
+    public static int getMonthDiff(Date d1, Date d2) {
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        c1.setTime(d1);
+        c2.setTime(d2);
+        int year1 = c1.get(Calendar.YEAR);
+        int year2 = c2.get(Calendar.YEAR);
+        int month1 = c1.get(Calendar.MONTH);
+        int month2 = c2.get(Calendar.MONTH);
+        if (year1 == year2) {
+            return month2 - month1;
+        }
+        int yearInterval = year2 - year1;
+        return ((month2 + 12) - month1) + ((yearInterval - 1) * 12);
     }
 }
 
