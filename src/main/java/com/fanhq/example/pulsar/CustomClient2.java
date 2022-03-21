@@ -16,7 +16,7 @@ public class CustomClient2 {
                 .build();
 
         Consumer consumer = client.newConsumer()
-                .topic("my-topic")
+                .topic("persistent://tenant1/ns1/my-topic")
                 .subscriptionName("my-subscription")
                 .subscribe();
 

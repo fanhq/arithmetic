@@ -19,7 +19,7 @@ public class CustomClient1 {
                 .serviceUrl("pulsar://172.19.3.194:6650,172.19.3.195:6650,172.19.3.196:6650")
                 .build();
         Producer<byte[]> producer = client.newProducer()
-                .topic("my-topic")
+                .topic("persistent://tenant1/ns1/my-topic")
                 .create();
 
         MessageId messageId = producer.send("My message".getBytes());
