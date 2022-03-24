@@ -1,7 +1,11 @@
 package com.fanhq.example.pulsar;
 
-import org.apache.pulsar.client.api.AuthenticationFactory;
-import org.apache.pulsar.client.api.PulsarClient;
+import com.alibaba.fastjson.JSON;
+import org.apache.pulsar.client.admin.PulsarAdmin;
+import org.apache.pulsar.common.policies.data.AuthAction;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author: fanhaiqiu
@@ -10,10 +14,19 @@ import org.apache.pulsar.client.api.PulsarClient;
 public class AdminClient {
 
     public static void main(String[] args) throws Exception {
-        PulsarClient client = PulsarClient.builder()
-                .serviceUrl("pulsar://172.19.3.194:6650,172.19.3.195:6650,172.19.3.196:6650")
-                .authentication(AuthenticationFactory.token("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0LXVzZXIifQ.JmSjukYZMsMn-LyL3rjZIjKwSIMuYqA3O0SiyNlOPaw"))
+        String url = "http://172.19.3.196:8087,172.19.3.195:8087,172.19.3.194:8087";
+        String authPluginClassName = "org.apache.pulsar.client.impl.auth.AuthenticationToken";
+        String authParams = "token:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.6vfN42m7xh0xlFZGKREn4keyXVzrw_iWP1sylo-RyXE";
+        PulsarAdmin admin = PulsarAdmin.builder()
+                .authentication(authPluginClassName,authParams)
+                .serviceHttpUrl(url)
                 .build();
+
+        Map<String, Set<AuthAction>> permissions = admin.namespaces().getPermissions("tenant2/ns2");
+        System.out.println(JSON.toJSONString(permissions));
+
+
+        admin.close();
 
     }
 }
