@@ -9,7 +9,7 @@ import org.apache.pulsar.client.api.PulsarClient;
  * @author: fanhaiqiu
  * @date: 2022/3/21
  */
-public class CustomClient2 {
+public class ConsumerClient {
 
     public static void main(String[] args) throws Exception{
         PulsarClient client = PulsarClient.builder()

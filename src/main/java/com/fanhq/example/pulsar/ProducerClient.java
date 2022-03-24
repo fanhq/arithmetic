@@ -6,7 +6,7 @@ import org.apache.pulsar.client.api.*;
  * @author: fanhaiqiu
  * @date: 2022/3/21
  */
-public class CustomClient1 {
+public class ProducerClient {
 
 
     public static void main(String[] args) throws Exception {
