@@ -15,7 +15,7 @@ public class ProducerClient {
                 .authentication(AuthenticationFactory.token("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0LXVzZXIifQ.JmSjukYZMsMn-LyL3rjZIjKwSIMuYqA3O0SiyNlOPaw"))
                 .build();
         Producer<byte[]> producer = client.newProducer()
-                .topic("persistent://tenant2/ns2/tp2")
+                .topic("persistent://tenant2/ns2/tp3")
                 .create();
 
         for (int i = 0; i < 100; i++) {

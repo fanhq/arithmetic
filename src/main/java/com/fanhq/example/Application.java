@@ -1,14 +1,20 @@
 package com.fanhq.example;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import delight.nashornsandbox.NashornSandbox;
 import delight.nashornsandbox.NashornSandboxes;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.ByteToMessageDecoder;
+import reactor.core.publisher.Mono;
+import reactor.netty.Connection;
+import reactor.netty.DisposableServer;
+import reactor.netty.tcp.TcpServer;
 
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -22,32 +28,10 @@ public class Application {
     //  private final ThreadLocal<NashornSandbox> threadLocal = ThreadLocal.withInitial(this::createNashornSandbox);
 
     public static void main(String[] args) throws Exception {
-        long l = 1000 * 60 * 60 * 24 * 180L;
-        System.out.println(System.currentTimeMillis() - l);
-        //long time = System.currentTimeMillis() / 1000 / 60 / 7;
-        //System.out.println(time);
-        //Calendar cal = Calendar.getInstance();
-        //int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
-        //System.out.println(w);
-        //long time = System.currentTimeMillis();//2736483/2736484
-        //System.out.println(time);
-        //System.out.println(time/1000/60/10);
-//        RandomAccessFile randomAccessFile = new RandomAccessFile("D:\\data\\test.txt", "rw");
-////        randomAccessFile.writeLong(1L);
-////        randomAccessFile.writeLong(2L);
-////        randomAccessFile.writeLong(3L);
-////        randomAccessFile.writeLong(4L);
-////        randomAccessFile.writeLong(5L);
-//        randomAccessFile.seek(8);
-//        long data = randomAccessFile.readLong();
-//        System.out.println(data);
-//        randomAccessFile.close();
-//        int sum = 0;
-//        for (int i = 1; i <16; i ++){
-//            sum = sum + getSkipCycle4NextSend(i);
-//        }
-//        System.out.println(sum);
+
+
     }
+
 
     public static int getSkipCycle4NextSend(int sentTimes) {
         int sum = 0;

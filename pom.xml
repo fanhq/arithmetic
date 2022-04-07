@@ -139,6 +139,11 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.65</version>
         </dependency>
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty</artifactId>
+            <version>1.0.17</version>
+        </dependency>
     </dependencies>
 
 
