@@ -30,8 +30,6 @@ public class NettyServer {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8))
                                     .addLast(new StringEncoder(CharsetUtil.UTF_8))
-                                    .addLast("testServerOutHandler1", new TestServerOutHandler())
-                                    .addLast("testServerOutHandler2", new TestServerOutHandler())
                                     .addLast("testServerInHandler", new TestServerInHandler());
                         }
                     }).option(ChannelOption.SO_BACKLOG, 128)
@@ -59,7 +57,7 @@ public class NettyServer {
             System.out.println(ctx.name());
             System.out.println("client request: " + msg);
             // ByteBuf content = Unpooled.copiedBuffer("i am server", CharsetUtil.UTF_8);
-            //ctx.writeAndFlush("i am server");
+            ctx.writeAndFlush(msg);
         }
 
 
@@ -67,15 +65,6 @@ public class NettyServer {
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
             //System.out.println("execute channelActive");
             super.channelActive(ctx);
-        }
-    }
-
-    public static class TestServerOutHandler extends ChannelOutboundHandlerAdapter {
-
-        @Override
-        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-            System.out.println(ctx.name() + ":" + msg);
-            super.write(ctx, msg, promise);
         }
     }
 
