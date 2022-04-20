@@ -28,9 +28,7 @@ public class NettyServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8))
-                                    .addLast(new StringEncoder(CharsetUtil.UTF_8))
-                                    .addLast("testServerInHandler", new TestServerInHandler());
+                            pipeline.addLast("testServerInHandler", new TestServerInHandler());
                         }
                     }).option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
