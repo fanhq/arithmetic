@@ -1,6 +1,7 @@
 package com.fanhq.example.netty;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -59,12 +60,14 @@ public class NettyClient {
         }
     }
 
-    public static class MyClientHandler extends SimpleChannelInboundHandler<String> {
+    public static class MyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+        protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
             //System.out.println(ctx.channel().remoteAddress());
-            System.out.println("server response: " + msg);
+            byte[] data = new byte[msg.readableBytes()];
+            msg.readBytes(data);
+            System.out.println("client request: " + bytesToHex(data));
             //ctx.writeAndFlush("from clinet: " + LocalDateTime.now());
         }
 
@@ -85,6 +88,23 @@ public class NettyClient {
         public void channelInactive(ChannelHandlerContext ctx) throws Exception {
             super.channelInactive(ctx);
             System.out.println("channelInactive");
+        }
+        /**
+         * 字节数组转16进制
+         *
+         * @param bytes 需要转换的byte数组
+         * @return 转换后的Hex字符串
+         */
+        public String bytesToHex(byte[] bytes) {
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < bytes.length; i++) {
+                String hex = Integer.toHexString(bytes[i] & 0xFF);
+                if (hex.length() < 2) {
+                    sb.append(0);
+                }
+                sb.append(hex);
+            }
+            return sb.toString().toUpperCase();
         }
     }
 }
