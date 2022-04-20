@@ -1,13 +1,11 @@
 package com.fanhq.example.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.util.CharsetUtil;
 
 /**
  * Created by Hachel on 2018/3/8
@@ -48,12 +46,14 @@ public class NettyServer {
         }
     }
 
-    public static class TestServerInHandler extends SimpleChannelInboundHandler<Object> {
+    public static class TestServerInHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
         @Override
-        protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+        protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
             System.out.println(ctx.name());
-            System.out.println("client request: " + msg);
+            byte[] data = new byte[msg.readableBytes()];
+            msg.readBytes(data);
+            System.out.println("client request: " + bytesToHex(data));
             // ByteBuf content = Unpooled.copiedBuffer("i am server", CharsetUtil.UTF_8);
             ctx.writeAndFlush(msg);
         }
@@ -63,6 +63,24 @@ public class NettyServer {
         public void channelActive(ChannelHandlerContext ctx) throws Exception {
             //System.out.println("execute channelActive");
             super.channelActive(ctx);
+        }
+
+        /**
+         * 字节数组转16进制
+         *
+         * @param bytes 需要转换的byte数组
+         * @return 转换后的Hex字符串
+         */
+        public String bytesToHex(byte[] bytes) {
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < bytes.length; i++) {
+                String hex = Integer.toHexString(bytes[i] & 0xFF);
+                if (hex.length() < 2) {
+                    sb.append(0);
+                }
+                sb.append(hex);
+            }
+            return sb.toString().toUpperCase();
         }
     }
 
