@@ -60,7 +60,7 @@ public class NettyServer {
             byte[] data = new byte[msg.readableBytes()];
             msg.readBytes(data);
             System.out.println("client request: " + bytesToHex(data));
-            ByteBuf content = Unpooled.copiedBuffer("i am server", CharsetUtil.UTF_8);
+            ByteBuf content = Unpooled.copiedBuffer(data);
 
             ctx.writeAndFlush(content);
         }
