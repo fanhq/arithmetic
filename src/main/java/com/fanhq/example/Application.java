@@ -25,18 +25,17 @@ public class Application {
     //  private final ThreadLocal<NashornSandbox> threadLocal = ThreadLocal.withInitial(this::createNashornSandbox);
 
     public static void main(String[] args) throws Exception {
-        String a= "设备号:15,起始频率:1550,结束频率:1620,功放:关闭,温度:26.7,正向功率:-1.22,反向功率:2.1,电流:0,电压:27.25,驻波比:1.2|设备号:24,起始频率:2395,结束频率:2495,功放:关闭,温度:31.7,正向功率:-16.5,反向功率:-2.05,电流:0.18,电压:27.54,驻波比:1.2|设备号:58,起始频率:5715,结束频率:5850,功放:关闭,温度:28.6,正向功率:-2.34,反向功率:-2.54,电流:0.25,电压:27.3,驻波比:1.2";
-        String[] split = a.split("\\|");
-        System.out.println(split.length);
-        //System.out.println(11>11);
-        //int sum = 0;
-        //int time = 11;
-        //for (int i = 1; i< time; i++){
-        //    int skipCycle4NextSend = getSkipCycle4NextSend(i);
-        //    sum = sum +skipCycle4NextSend;
-        //}
-        //System.out.println(getSkipCycle4NextSend(10));
-        //System.out.println(sum);
+        //String a= "设备号:15,起始频率:1550,结束频率:1620,功放:关闭,温度:26.7,正向功率:-1.22,反向功率:2.1,电流:0,电压:27.25,驻波比:1.2|设备号:24,起始频率:2395,结束频率:2495,功放:关闭,温度:31.7,正向功率:-16.5,反向功率:-2.05,电流:0.18,电压:27.54,驻波比:1.2|设备号:58,起始频率:5715,结束频率:5850,功放:关闭,温度:28.6,正向功率:-2.34,反向功率:-2.54,电流:0.25,电压:27.3,驻波比:1.2";
+        //String[] split = a.split("\\|");
+        //System.out.println(split.length);
+        int sum = 0;
+        int time = 10;
+        for (int i = 1; i< time +1; i++){
+            int skipCycle4NextSend = getSkipCycle4NextSend(i);
+            sum = sum +skipCycle4NextSend;
+        }
+        System.out.println(getSkipCycle4NextSend(10));
+        System.out.println(sum);
     }
 
     public static String byteToHex(byte b) {

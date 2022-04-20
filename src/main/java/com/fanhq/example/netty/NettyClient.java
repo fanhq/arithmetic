@@ -30,15 +30,15 @@ public class NettyClient {
                             ChannelPipeline pipeline = ch.pipeline();
                             //pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
                             //pipeline.addLast(new LengthFieldPrepender(4));
-                            pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
-                            pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+                            //pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
+                            //pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
                             // 最后添加我们自己的处理器
                             pipeline.addLast(new MyClientHandler());
                         }
                     }
             );
 
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 8899).sync();
+            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 15000).sync();
            // ByteBuf content = Unpooled.copiedBuffer("i am client", CharsetUtil.UTF_8);
             // 发送客户端的请求
             Channel channel = channelFuture.channel();
@@ -59,14 +59,14 @@ public class NettyClient {
         }
     }
 
-    public static class MyClientHandler extends ChannelDuplexHandler {
+    public static class MyClientHandler extends SimpleChannelInboundHandler<String> {
 
-        //@Override
-        //protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        //    //System.out.println(ctx.channel().remoteAddress());
-        //    System.out.println("server response: " + msg);
-        //    //ctx.writeAndFlush("from clinet: " + LocalDateTime.now());
-        //}
+        @Override
+        protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+            //System.out.println(ctx.channel().remoteAddress());
+            System.out.println("server response: " + msg);
+            //ctx.writeAndFlush("from clinet: " + LocalDateTime.now());
+        }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

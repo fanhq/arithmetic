@@ -55,7 +55,7 @@ public class NettyServer {
             msg.readBytes(data);
             System.out.println("client request: " + bytesToHex(data));
             // ByteBuf content = Unpooled.copiedBuffer("i am server", CharsetUtil.UTF_8);
-            ctx.writeAndFlush(msg);
+            ctx.writeAndFlush(data);
         }
 
 
