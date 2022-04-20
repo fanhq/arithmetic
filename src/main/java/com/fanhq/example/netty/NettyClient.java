@@ -32,7 +32,7 @@ public class NettyClient {
                             //pipeline.addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, 4, 0, 4));
                             //pipeline.addLast(new LengthFieldPrepender(4));
                             //pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
-                            //pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+                            pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
                             // 最后添加我们自己的处理器
                             pipeline.addLast(new MyClientHandler());
                         }
@@ -50,7 +50,6 @@ public class NettyClient {
 
             TimeUnit.SECONDS.sleep(10);
             ChannelFuture channelFuture1 = channel.writeAndFlush("i am client");
-            System.out.println(channelFuture.isSuccess());
 
             channelFuture.channel().closeFuture().sync();
         } catch (Exception e) {
@@ -67,7 +66,7 @@ public class NettyClient {
             //System.out.println(ctx.channel().remoteAddress());
             byte[] data = new byte[msg.readableBytes()];
             msg.readBytes(data);
-            System.out.println("client request: " + bytesToHex(data));
+            System.out.println("server response: " + bytesToHex(data));
             //ctx.writeAndFlush("from clinet: " + LocalDateTime.now());
         }
 

@@ -2,10 +2,15 @@ package com.fanhq.example.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.CharsetUtil;
+
+import java.nio.CharBuffer;
 
 /**
  * Created by Hachel on 2018/3/8
@@ -26,7 +31,8 @@ public class NettyServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast("testServerInHandler", new TestServerInHandler());
+                            pipeline.addLast("testServerOutHandler", new TestServerOutHandler())
+                                    .addLast("testServerInHandler", new TestServerInHandler());
                         }
                     }).option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
@@ -54,8 +60,9 @@ public class NettyServer {
             byte[] data = new byte[msg.readableBytes()];
             msg.readBytes(data);
             System.out.println("client request: " + bytesToHex(data));
-            // ByteBuf content = Unpooled.copiedBuffer("i am server", CharsetUtil.UTF_8);
-            ctx.writeAndFlush(data);
+            ByteBuf content = Unpooled.copiedBuffer("i am server", CharsetUtil.UTF_8);
+
+            ctx.writeAndFlush(content);
         }
 
 
@@ -81,6 +88,15 @@ public class NettyServer {
                 sb.append(hex);
             }
             return sb.toString().toUpperCase();
+        }
+    }
+
+    public static class TestServerOutHandler extends ChannelOutboundHandlerAdapter {
+
+        @Override
+        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+            System.out.println(ctx.name() + ":" + msg);
+            super.write(ctx, msg, promise);
         }
     }
 
