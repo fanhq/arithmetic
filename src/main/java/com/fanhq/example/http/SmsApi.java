@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class SmsApi {
     public static void main(String[] args) throws Exception {
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1; i++) {
             //模板签名短信接口请求地址
             String templateSmsUrl = "http://10.15.8.78:80/tempSignSmsSend";
             //模板签名短信接口请求参数
