@@ -12,4 +12,5 @@ public class DemoDTO1 {
 
     @ExcelProperty("资源名称")
     private String name;
+    private byte[] na;
 }

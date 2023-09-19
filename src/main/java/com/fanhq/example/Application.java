@@ -3,15 +3,11 @@ package com.fanhq.example;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import delight.nashornsandbox.NashornSandbox;
 import delight.nashornsandbox.NashornSandboxes;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.ByteToMessageDecoder;
-import javax.sound.midi.Soundbank;
+
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -25,17 +21,10 @@ public class Application {
     //  private final ThreadLocal<NashornSandbox> threadLocal = ThreadLocal.withInitial(this::createNashornSandbox);
 
     public static void main(String[] args) throws Exception {
-        //String a= "设备号:15,起始频率:1550,结束频率:1620,功放:关闭,温度:26.7,正向功率:-1.22,反向功率:2.1,电流:0,电压:27.25,驻波比:1.2|设备号:24,起始频率:2395,结束频率:2495,功放:关闭,温度:31.7,正向功率:-16.5,反向功率:-2.05,电流:0.18,电压:27.54,驻波比:1.2|设备号:58,起始频率:5715,结束频率:5850,功放:关闭,温度:28.6,正向功率:-2.34,反向功率:-2.54,电流:0.25,电压:27.3,驻波比:1.2";
-        //String[] split = a.split("\\|");
-        //System.out.println(split.length);
-        int sum = 0;
-        int time = 10;
-        for (int i = 1; i< time +1; i++){
-            int skipCycle4NextSend = getSkipCycle4NextSend(i);
-            sum = sum +skipCycle4NextSend;
-        }
-        System.out.println(getSkipCycle4NextSend(10));
-        System.out.println(sum);
+        String[] userTypes = new String[2];
+        userTypes[0] = "1";
+        userTypes[1]= "2";
+        System.out.println(Arrays.asList(userTypes).contains("1"));
     }
 
     public static String byteToHex(byte b) {

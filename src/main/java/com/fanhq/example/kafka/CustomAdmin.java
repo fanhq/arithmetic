@@ -17,6 +17,7 @@ import org.apache.kafka.common.resource.ResourceType;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author: fanhaiqiu
@@ -26,7 +27,9 @@ public class CustomAdmin {
 
     public static void main(String[] args) throws Exception {
         Properties props = new Properties();
-        props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "172.19.3.194:9092,172.19.3.194:9092,172.19.3.194:9092");
+        //props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "172.19.3.194:9092,172.19.3.195:9092,172.19.3.196:9092");
+        props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "172.19.3.196:9096");
+        //props.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "10.15.12.117:30208,10.15.12.118:32460,10.15.12.124:30128");
         props.put("sasl.jaas.config", "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"admin\" password=\"iot@10086\";");
         props.put(AdminClientConfig.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
         props.put(SaslConfigs.SASL_MECHANISM, "SCRAM-SHA-512");
@@ -38,7 +41,22 @@ public class CustomAdmin {
         describeClusterOptions.timeoutMs(10000);
         DescribeClusterResult describeClusterResult = adminClient.describeCluster();
         Collection<Node> nodes = describeClusterResult.nodes().get();
-        System.out.println(nodes);
+        System.out.println(nodes.toString());
+
+        //try {
+        //    DescribeClusterOptions describeClusterOptions = new DescribeClusterOptions();
+        //    describeClusterOptions.timeoutMs(10000);
+        //    DescribeClusterResult describeClusterResult = adminClient.describeCluster();
+        //    Collection<Node> nodes = describeClusterResult.nodes().get();
+        //    System.out.println(nodes.size());
+        //    List<String> clusters = nodes.stream().map(x -> x.host().concat(":").concat(String.valueOf(x.port())))
+        //            .collect(Collectors.toList());
+        //    System.out.println(clusters.toString());
+        //} finally {
+        //    if (Objects.nonNull(adminClient)) {
+        //        adminClient.close();
+        //    }
+        //}
 //        DescribeClusterResult describeClusterResult = adminClient.describeCluster();
 //        Collection<Node> nodes = describeClusterResult.nodes().get();
 //        System.out.println(nodes);
@@ -86,8 +104,10 @@ public class CustomAdmin {
 //        System.out.println(listTopicsResult.listings().get());
 //
 //        //查询
-//        DescribeConsumerGroupsResult describeConsumerGroupsResult = adminClient.describeConsumerGroups(Arrays.asList("test002"));
+//        DescribeConsumerGroupsResult describeConsumerGroupsResult = adminClient.describeConsumerGroups(Arrays.asList("grp001"));
+//        Map<String, ConsumerGroupDescription> consumerGroupDescriptionMap = describeConsumerGroupsResult.all().get();
 //        System.out.println(describeConsumerGroupsResult.all().get());
+//
 //        ListConsumerGroupOffsetsResult listConsumerGroupOffsetsResult = adminClient.listConsumerGroupOffsets("test002");
 //        System.out.println(listConsumerGroupOffsetsResult.partitionsToOffsetAndMetadata().get());
 //
@@ -106,21 +126,21 @@ public class CustomAdmin {
 
 
         //授权
-//        ResourcePattern resourcePattern = new ResourcePattern(ResourceType.TOPIC, "test004", PatternType.LITERAL);
-//        AccessControlEntry accessControlEntry = new AccessControlEntry("User:fanhaiqiu", "0.0.0.0", AclOperation.READ, AclPermissionType.ALLOW);
-//        AclBinding aclBinding = new AclBinding(resourcePattern, accessControlEntry);
-//        CreateAclsResult createAclsResult = adminClient.createAcls(Arrays.asList(aclBinding));
-//        createAclsResult.all().get();
-//        System.out.println(createAclsResult.all().isDone());
+        //ResourcePattern resourcePattern = new ResourcePattern(ResourceType.GROUP, "grp001", PatternType.LITERAL);
+        //AccessControlEntry accessControlEntry = new AccessControlEntry("User:ZKFlZyFW", "192.168.231.*", AclOperation.READ, AclPermissionType.ALLOW);
+        //AclBinding aclBinding = new AclBinding(resourcePattern, accessControlEntry);
+        //CreateAclsResult createAclsResult = adminClient.createAcls(Arrays.asList(aclBinding));
+        //createAclsResult.all().get();
+        //System.out.println(createAclsResult.all().isDone());
 
 
         //删除权限
-//        ResourcePatternFilter resourcePatternFilter = new ResourcePatternFilter(ResourceType.GROUP, "test002", PatternType.LITERAL);
-//        AccessControlEntryFilter accessControlEntryFilter = new AccessControlEntryFilter("User:fanhaiqiu", null, AclOperation.READ, AclPermissionType.ALLOW);
-//        AclBindingFilter aclBinding = new AclBindingFilter(resourcePatternFilter, accessControlEntryFilter);
-//        DeleteAclsResult deleteAclsResult = adminClient.deleteAcls(Arrays.asList(aclBinding));
-//        deleteAclsResult.all().get();
-//        System.out.println(deleteAclsResult.all().isDone());
+        //ResourcePatternFilter resourcePatternFilter = new ResourcePatternFilter(ResourceType.GROUP, "grp001", PatternType.LITERAL);
+        //AccessControlEntryFilter accessControlEntryFilter = new AccessControlEntryFilter("User:ZKFlZyFW", null, AclOperation.READ, AclPermissionType.ALLOW);
+        //AclBindingFilter aclBinding = new AclBindingFilter(resourcePatternFilter, accessControlEntryFilter);
+        //DeleteAclsResult deleteAclsResult = adminClient.deleteAcls(Arrays.asList(aclBinding));
+        //deleteAclsResult.all().get();
+        //System.out.println(deleteAclsResult.all().isDone());
 
         //新增用户
 //        ScramCredentialInfo credentialInfo = new ScramCredentialInfo(ScramMechanism.SCRAM_SHA_512, 4096);
@@ -130,10 +150,10 @@ public class CustomAdmin {
 //        System.out.println(alterUserScramCredentialsResult.all().isDone());
 
         //删除用户
-//        UserScramCredentialDeletion userScramCredentialDeletion = new UserScramCredentialDeletion("test_user", ScramMechanism.SCRAM_SHA_512);
-//        AlterUserScramCredentialsResult alterUserScramCredentialsResult = adminClient.alterUserScramCredentials(Arrays.asList(userScramCredentialDeletion));
-//        alterUserScramCredentialsResult.all().get();
-//        System.out.println(alterUserScramCredentialsResult.all().isDone());
+        //UserScramCredentialDeletion userScramCredentialDeletion = new UserScramCredentialDeletion("test_user11", ScramMechanism.SCRAM_SHA_512);
+        //AlterUserScramCredentialsResult alterUserScramCredentialsResult = adminClient.alterUserScramCredentials(Arrays.asList(userScramCredentialDeletion));
+        //alterUserScramCredentialsResult.all().get();
+        //System.out.println(alterUserScramCredentialsResult.all().isDone());
 
         //用户配额
 //        Map<String, String> entries = new HashMap<>();
